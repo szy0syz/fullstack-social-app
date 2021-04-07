@@ -15,3 +15,7 @@
 ├── [ 128]  utilsServer
 └── [157K]  yarn.lock
 ```
+
+## Links
+
+- [https://nextjs.org/docs/advanced-features/custom-app]
