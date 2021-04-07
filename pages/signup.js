@@ -1,7 +1,16 @@
 import React from 'react';
+import {
+  HeaderMessage,
+  FooterMessage,
+} from '../components/Common/WelcomeMessage';
 
 function Signup() {
-  return <div>Signup</div>;
+  return (
+    <>
+      <HeaderMessage />
+      <FooterMessage />
+    </>
+  );
 }
 
 export default Signup;
