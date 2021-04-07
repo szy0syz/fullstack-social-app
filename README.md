@@ -1,8 +1,6 @@
 # fullstack-social-app
 
-> fullstack: react, nextjs, express, socketIO, semanticUI, mongoDB
-
-## Menu
+## directories
 
 ```bash
 .
@@ -16,6 +14,4 @@
 ├── [ 192]  utilsClient
 ├── [ 128]  utilsServer
 └── [157K]  yarn.lock
-
-7 directories, 3 files
 ```
