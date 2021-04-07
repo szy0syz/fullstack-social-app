@@ -4,13 +4,16 @@
 
 ```bash
 .
-├── [   0]  README.md
-├── [  96]  components
+├── [ 414]  README.md
+├── [ 128]  components
+├── [  47]  config.env
 ├── [ 160]  models
+├── [  58]  next.config.js
 ├── [ 14K]  node_modules
 ├── [1.0K]  package.json
-├── [ 128]  pages
+├── [ 160]  pages
 ├── [ 288]  public
+├── [ 587]  server.js
 ├── [ 192]  utilsClient
 ├── [ 128]  utilsServer
 └── [157K]  yarn.lock
