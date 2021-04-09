@@ -4,6 +4,7 @@
   "private": false,
   "scripts": {
     "dev": "nodemon server.js",
+    "dev:client": "node server.js",
     "build": "next build",
     "start": "NODE_ENV=production node server.js"
   },
