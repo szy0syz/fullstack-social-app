@@ -3,8 +3,9 @@ const Schema = mongoose.Schema;
 
 const ProfileSchema = new Schema(
   {
-    user: { type: Schema.Types.ObjectId, ref: 'user' },
-    bio: { type: String, require: true },
+    user: { type: Schema.Types.ObjectId, ref: 'User' },
+    bio: { type: String, required: true },
+
     social: {
       youtube: { type: String },
       twitter: { type: String },
@@ -12,9 +13,7 @@ const ProfileSchema = new Schema(
       instagram: { type: String },
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
-module.exports = mongoose.model('profile', ProfileSchema);
+module.exports = mongoose.model('Profile', ProfileSchema);
