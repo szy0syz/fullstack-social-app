@@ -5,7 +5,7 @@ import {
   FooterMessage,
 } from '../components/Common/WelcomeMessage';
 import axios from "axios";
-import baseUrl from "../utils/baseUrl";
+import baseUrl from "../utilsClient/baseUrl";
 import CommonInputs from '../components/Common/CommonInputs';
 import ImageDropDiv from '../components/Common/ImageDropDiv';
 const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
