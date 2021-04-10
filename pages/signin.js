@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import baseUrl from '../utilsClient/baseUrl';
-import axios from 'axios';
+import { loginUser } from '../utilsClient/authUser'
 import {
   HeaderMessage,
   FooterMessage,
