@@ -1,16 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Form, Button, Message, Segment, Divider } from 'semantic-ui-react';
+import CommonInputs from '../components/Common/CommonInputs';
+import ImageDropDiv from '../components/Common/ImageDropDiv';
 import {
   HeaderMessage,
   FooterMessage,
 } from '../components/Common/WelcomeMessage';
 import axios from 'axios';
 import baseUrl from '../utilsClient/baseUrl';
-import CommonInputs from '../components/Common/CommonInputs';
-import ImageDropDiv from '../components/Common/ImageDropDiv';
-
+import { registerUser } from '../utilsClient/authUser';
+import uploadPic from '../utilsClient/uploadPicToCloudinary';
 const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
-
 let cancel;
 
 function Signup() {
@@ -27,6 +27,17 @@ function Signup() {
 
   const { name, email, password, bio } = user;
 
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+
+    if (name === 'media') {
+      setMedia(files[0]);
+      setMediaPreview(URL.createObjectURL(files[0]));
+    }
+
+    setUser((prev) => ({ ...prev, [name]: value }));
+  };
+
   const [showSocialLinks, setShowSocialLinks] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -42,27 +53,16 @@ function Signup() {
   const [highlighted, setHighlighted] = useState(false);
   const inputRef = useRef();
 
-  const handleSubmit = (e) => e.preventDefault();
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === 'media') {
-      setMedia(files[0]);
-      setMediaPreview(URL.createObjectURL(files[0]));
-    }
-    setUser((prev) => ({ ...prev, [name]: value }));
-  };
-
   useEffect(() => {
-    const isUSer = Object.values({ name, email, username, password }).every(
-      Boolean
+    const isUser = Object.values({ name, email, password, bio }).every((item) =>
+      Boolean(item)
     );
-    isUSer ? setSubmitDisabled(false) : setSubmitDisabled(true);
+    isUser ? setSubmitDisabled(false) : setSubmitDisabled(true);
   }, [user]);
 
   const checkUsername = async () => {
     setUsernameLoading(true);
     try {
-      //? 这是？
       cancel && cancel();
 
       const CancelToken = axios.CancelToken;
@@ -72,12 +72,16 @@ function Signup() {
           cancel = canceler;
         }),
       });
+
+      if (errorMsg !== null) setErrorMsg(null);
+
       if (res.data === 'Available') {
         setUsernameAvailable(true);
         setUser((prev) => ({ ...prev, username }));
       }
     } catch (error) {
       setErrorMsg('Username Not Available');
+      setUsernameAvailable(false);
     }
     setUsernameLoading(false);
   };
@@ -85,6 +89,23 @@ function Signup() {
   useEffect(() => {
     username === '' ? setUsernameAvailable(false) : checkUsername();
   }, [username]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setFormLoading(true);
+
+    let profilePicUrl;
+    if (media !== null) {
+      profilePicUrl = await uploadPic(media);
+    }
+
+    if (media !== null && !profilePicUrl) {
+      setFormLoading(false);
+      return setErrorMsg('Error Uploading Image');
+    }
+
+    await registerUser(user, profilePicUrl, setErrorMsg, setFormLoading);
+  };
 
   return (
     <>
@@ -100,6 +121,7 @@ function Signup() {
           content={errorMsg}
           onDismiss={() => setErrorMsg(null)}
         />
+
         <Segment>
           <ImageDropDiv
             mediaPreview={mediaPreview}
@@ -111,6 +133,7 @@ function Signup() {
             handleChange={handleChange}
           />
           <Form.Input
+            required
             label="Name"
             placeholder="Name"
             name="name"
@@ -120,6 +143,7 @@ function Signup() {
             icon="user"
             iconPosition="left"
           />
+
           <Form.Input
             required
             label="Email"
@@ -170,21 +194,25 @@ function Signup() {
             icon={usernameAvailable ? 'check' : 'close'}
             iconPosition="left"
           />
+
           <CommonInputs
             user={user}
-            handleChange={handleChange}
             showSocialLinks={showSocialLinks}
             setShowSocialLinks={setShowSocialLinks}
+            handleChange={handleChange}
           />
+
           <Divider hidden />
           <Button
-            content="signup"
+            icon="signup"
+            content="Signup"
             type="submit"
             color="orange"
             disabled={submitDisabled || !usernameAvailable}
           />
         </Segment>
       </Form>
+
       <FooterMessage />
     </>
   );
