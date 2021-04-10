@@ -4,11 +4,14 @@ import {
   HeaderMessage,
   FooterMessage,
 } from '../components/Common/WelcomeMessage';
-import axios from "axios";
-import baseUrl from "../utilsClient/baseUrl";
+import axios from 'axios';
+import baseUrl from '../utilsClient/baseUrl';
 import CommonInputs from '../components/Common/CommonInputs';
 import ImageDropDiv from '../components/Common/ImageDropDiv';
+
 const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
+
+let cancel;
 
 function Signup() {
   const [user, setUser] = useState({
@@ -55,6 +58,33 @@ function Signup() {
     );
     isUSer ? setSubmitDisabled(false) : setSubmitDisabled(true);
   }, [user]);
+
+  const checkUsername = async () => {
+    setUsernameLoading(true);
+    try {
+      //? 这是？
+      cancel && cancel();
+
+      const CancelToken = axios.CancelToken;
+
+      const res = await axios.get(`${baseUrl}/api/signup/${username}`, {
+        cancelToken: new CancelToken((canceler) => {
+          cancel = canceler;
+        }),
+      });
+      if (res.data === 'Available') {
+        setUsernameAvailable(true);
+        setUser((prev) => ({ ...prev, username }));
+      }
+    } catch (error) {
+      setErrorMsg('Username Not Available');
+    }
+    setUsernameLoading(false);
+  };
+
+  useEffect(() => {
+    username === '' ? setUsernameAvailable(false) : checkUsername();
+  }, [username]);
 
   return (
     <>

@@ -10,8 +10,9 @@ const userPng = 'http://cdn.jerryshi.com/user.png';
 
 const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 
-outer.get('/:username', async (req, res) => {
+router.get('/:username', async (req, res) => {
   const { username } = req.params;
+  console.log('params', req.params);
 
   try {
     if (username.length < 1) return res.status(401).send('Invalid');
@@ -99,3 +100,5 @@ router.post('/', async (req, res) => {
     return res.status(500).send(`Server error`);
   }
 });
+
+module.exports = router;
