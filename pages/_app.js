@@ -10,7 +10,9 @@ class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
     let pageProps = {};
     const { token } = parseCookies(ctx);
-    const protectedRoutes = ctx.pathname === '/';
+
+    // 可以反着来
+    const protectedRoutes = ['/', '/t1'].includes(ctx.pathname);
 
     if (!token) {
       protectedRoutes && redirectUser(ctx, '/signin');

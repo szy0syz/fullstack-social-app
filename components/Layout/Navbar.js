@@ -11,6 +11,12 @@ function Navbar() {
   return (
     <Menu fluid borderless>
       <Container>
+      <Link href="/">
+          <Menu.Item active={isActive('/')}>
+            <Icon size="large" name="home" />
+            Home
+          </Menu.Item>
+        </Link>
         <Link href="/signin">
           <Menu.Item active={isActive('/signin')}>
             <Icon size="large" name="sign in" />
@@ -21,6 +27,12 @@ function Navbar() {
           <Menu.Item active={isActive('/signup')}>
             <Icon size="large" name="signup" />
             Sign up
+          </Menu.Item>
+        </Link>
+        <Link href="/t1">
+          <Menu.Item active={isActive('/t1')}>
+            <Icon size="large" name="settings" />
+            T1
           </Menu.Item>
         </Link>
       </Container>
