@@ -1,27 +1,10 @@
-import axios from 'axios';
 import React from 'react';
 
-function Index({ posts }) {
-  return (
-    <div>
-      {posts &&
-        posts.length > 0 &&
-        posts.map((post) => <h1 key={post.id}>{post.title}</h1>)}
-    </div>
-  );
+function Index({ user, userFollowStats }) {
+  console.log('~~user', user);
+  console.log('~~userFollowStats', userFollowStats);
+
+  return <div>Home</div>;
 }
-
-Index.getInitialProps = async (ctx) => {
-  try {
-    const res = await axios.get('https://jsonplaceholder.typicode.com/posts');
-
-    // const { name } = ctx.query;
-    // console.log('~~query.name', name);
-
-    return { posts: res.data };
-  } catch (error) {
-    return { errorLoading: true };
-  }
-};
 
 export default Index;

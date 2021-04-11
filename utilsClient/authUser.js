@@ -41,3 +41,13 @@ const setToken = (token) => {
   cookie.set('token', token);
   Router.push('/');
 };
+
+export const redirectUser = (ctx, location) => {
+  // 在 服务端 还是在 客户端
+  if (ctx.req) {
+    ctx.res.writeHead(302, { Location:location });
+    ctx.res.end();
+  } else {
+    Router.push(location)
+  }
+}
