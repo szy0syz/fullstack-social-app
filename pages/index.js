@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 function Index({ user, userFollowStats }) {
-  console.log('~~user', user);
-  console.log('~~userFollowStats', userFollowStats);
+  useEffect(() => {
+    document.title = `Welcome, ${user.name}`;
+  }, []);
 
   return <div>Home</div>;
 }
