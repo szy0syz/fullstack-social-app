@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { loginUser } from '../utilsClient/authUser'
+import React, { useState, useEffect } from "react";
+import { loginUser } from "../utilsClient/authUser";
 import {
   HeaderMessage,
   FooterMessage,
-} from '../components/Common/WelcomeMessage';
-import { Segment, Form, Message, Divider, Button } from 'semantic-ui-react';
+} from "../components/Common/WelcomeMessage";
+import cookie from "js-cookie";
+import { Segment, Form, Message, Divider, Button } from "semantic-ui-react";
 
 function Signin() {
   const [user, setUser] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const { email, password } = user;
@@ -29,6 +30,12 @@ function Signin() {
     );
     isUser ? setSubmitDisabled(false) : setSubmitDisabled(true);
   }, [user]);
+
+  useEffect(() => {
+    document.title = "Welcome Back";
+    const userEmail = cookie.get("userEmail");
+    if (userEmail) setUser((prev) => ({ ...prev, email: userEmail }));
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -72,13 +79,13 @@ function Signin() {
             onChange={handleChange}
             fluid
             icon={{
-              name: 'eye',
+              name: "eye",
               circular: true,
               link: true,
               onClick: () => setShowPassword(!showPassword),
             }}
             iconPosition="left"
-            type={showPassword ? 'text' : 'password'}
+            type={showPassword ? "text" : "password"}
             required
           />
           <Divider hidden />

@@ -1,8 +1,8 @@
-import axios from 'axios';
-import baseUrl from './baseUrl';
-import catchErrors from './catchErrors';
-import Router from 'next/router';
-import cookie from 'js-cookie';
+import axios from "axios";
+import baseUrl from "./baseUrl";
+import catchErrors from "./catchErrors";
+import Router from "next/router";
+import cookie from "js-cookie";
 
 export const registerUser = async (
   user,
@@ -37,17 +37,24 @@ export const loginUser = async (user, setError, setLoading) => {
   setLoading(false);
 };
 
-const setToken = (token) => {
-  cookie.set('token', token);
-  Router.push('/');
-};
-
 export const redirectUser = (ctx, location) => {
   // 在 服务端 还是在 客户端
   if (ctx.req) {
-    ctx.res.writeHead(302, { Location:location });
+    ctx.res.writeHead(302, { Location: location });
     ctx.res.end();
   } else {
-    Router.push(location)
+    Router.push(location);
   }
-}
+};
+
+export const logoutUser = (email) => {
+  cookie.set("userEmail", email);
+  cookie.remove("token");
+  Router.push("/signin");
+  Router.reload();
+};
+
+const setToken = (token) => {
+  cookie.set("token", token);
+  Router.push("/");
+};
