@@ -1,5 +1,5 @@
 require('dotenv').config({ path: './config.env' });
-const express = require("express");
+const express = require('express');
 const app = express();
 const server = require('http').Server(app);
 const connectDB = require('./utilsServer/connectDb');
@@ -17,6 +17,7 @@ nextApp.prepare().then(() => {
   app.use('/api/signup', require('./api/signup'));
   app.use('/api/auth', require('./api/auth'));
   app.use('/api/search', require('./api/search'));
+  app.use('/api/posts', require('./api/posts'));
 
   app.all('*', (req, res) => handle(req, res));
 
