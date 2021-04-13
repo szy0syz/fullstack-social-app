@@ -4,19 +4,23 @@
 
 ```bash
 .
-├── [ 414]  README.md
-├── [ 128]  components
-├── [  47]  config.env
-├── [ 160]  models
-├── [  58]  next.config.js
-├── [ 14K]  node_modules
-├── [1.0K]  package.json
-├── [ 160]  pages
-├── [ 288]  public
-├── [ 587]  server.js
-├── [ 192]  utilsClient
-├── [ 128]  utilsServer
-└── [157K]  yarn.lock
+├── README.md
+├── api
+├── components
+├── config.env.example
+├── middleware
+├── models
+├── next.config.js
+├── node_modules
+├── package.json
+├── pages
+├── public
+├── server.js
+├── utilsClient
+├── utilsServer
+└── yarn.lock
+
+9 directories, 7 files
 ```
 
 ## Links
