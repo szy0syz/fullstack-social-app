@@ -28,15 +28,19 @@ function Index({ user, postsData = [], errorLoading }) {
     <>
       <Segment>
         <CreatePost user={user} setPosts={setPosts} />
-        {posts.map((post) => (
-          <CardPost
-            key={post._id}
-            post={post}
-            user={user}
-            setPosts={setPosts}
-            setShowToastr={setShowToastr}
-          />
-        ))}
+        {posts.length === 0 || errorLoading ? (
+          <NoPosts />
+        ) : (
+          posts.map((post) => (
+            <CardPost
+              key={post._id}
+              post={post}
+              user={user}
+              setPosts={setPosts}
+              setShowToastr={setShowToastr}
+            />
+          ))
+        )}
       </Segment>
     </>
   );
