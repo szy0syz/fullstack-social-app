@@ -43,7 +43,6 @@ class MyApp extends App {
 
   render() {
     const { Component, pageProps } = this.props;
-
     return (
       <Layout {...pageProps}>
         <Component {...pageProps} />

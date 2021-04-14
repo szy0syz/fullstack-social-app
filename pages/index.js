@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import baseUrl from '../utils/baseUrl';
+import baseUrl from '../utilsClient/baseUrl';
 import CreatePost from '../components/Post/CreatePost';
 import CardPost from '../components/Post/CardPost';
 import { Segment } from 'semantic-ui-react';
@@ -14,15 +14,15 @@ import {
 } from '../components/Layout/PlaceHolderGroup';
 import cookie from 'js-cookie';
 
-function Index({ user, postData, errorLoading }) {
-  const [posts, setPosts] = useState(postData);
+function Index({ user, postsData = [], errorLoading }) {
+  const [posts, setPosts] = useState(postsData);
   const [showToastr, setShowToastr] = useState(false);
 
   useEffect(() => {
     document.title = `Welcome, ${user.name}`;
   }, []);
 
-  if (posts.length === 0 || errorLoading) return <NoPosts />;
+  // if (posts.length === 0 || errorLoading) return <NoPosts />;
 
   return (
     <>
@@ -42,7 +42,7 @@ function Index({ user, postData, errorLoading }) {
   );
 }
 
-Index.getInitailProps = async (ctx) => {
+Index.getInitialProps = async (ctx) => {
   try {
     const { token } = parseCookies(ctx);
 
@@ -51,7 +51,7 @@ Index.getInitailProps = async (ctx) => {
       params: { pageNumber: 1 },
     });
 
-    return { postData: res.data };
+    return { postsData: res.data };
   } catch (error) {
     return { errorLoading: true };
   }
