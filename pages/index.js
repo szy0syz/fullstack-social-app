@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import baseUrl from '../utilsClient/baseUrl';
-import CreatePost from '../components/Post/CreatePost';
-import CardPost from '../components/Post/CardPost';
-import { Segment } from 'semantic-ui-react';
-import { parseCookies } from 'nookies';
-import { NoPosts } from '../components/Layout/NoData';
-import { PostDeleteToastr } from '../components/Layout/Toastr';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import baseUrl from "../utilsClient/baseUrl";
+import CreatePost from "../components/Post/CreatePost";
+import CardPost from "../components/Post/CardPost";
+import { Segment } from "semantic-ui-react";
+import { parseCookies } from "nookies";
+import { NoPosts } from "../components/Layout/NoData";
+import { PostDeleteToastr } from "../components/Layout/Toastr";
+import InfiniteScroll from "react-infinite-scroll-component";
 import {
   PlaceHolderPosts,
   EndMessage,
-} from '../components/Layout/PlaceHolderGroup';
-import cookie from 'js-cookie';
+} from "../components/Layout/PlaceHolderGroup";
+import cookie from "js-cookie";
 
 function Index({ user, postsData = [], errorLoading }) {
   const [posts, setPosts] = useState(postsData);
@@ -22,10 +22,18 @@ function Index({ user, postsData = [], errorLoading }) {
     document.title = `Welcome, ${user.name}`;
   }, []);
 
+  useEffect(() => {
+    showToastr &&
+      setTimeout(() => {
+        setShowToastr(false);
+      }, 2800);
+  }, [showToastr]);
+
   // if (posts.length === 0 || errorLoading) return <NoPosts />;
 
   return (
     <>
+      {showToastr && <PostDeleteToastr />}
       <Segment>
         <CreatePost user={user} setPosts={setPosts} />
         {posts.length === 0 || errorLoading ? (

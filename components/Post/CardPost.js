@@ -14,7 +14,7 @@ import calculateTime from "../../utilsClient/calculateTime";
 import CommentInputField from "./CommentInputField";
 import LikesList from "./LikesList";
 import PostComments from "./PostComments";
-import { deletePost } from '../../utilsClient/postActions'
+import { deletePost, likePost } from '../../utilsClient/postActions'
 
 function CardPost({ post, user, setPosts, setShowToastr }) {
   const [likes, setLikes] = useState(post.likes);
@@ -105,7 +105,7 @@ function CardPost({ post, user, setPosts, setShowToastr }) {
               color="red"
               style={{ cursor: "pointer" }}
               onClick={() => {
-                // likePost(post._id, user._id, setLikes, isLiked ? false : true)
+                likePost(post._id, user._id, setLikes, isLiked ? false : true)
               }}
             />
 
