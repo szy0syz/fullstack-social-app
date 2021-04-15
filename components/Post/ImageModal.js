@@ -2,21 +2,20 @@ import React from "react";
 import { Modal, Grid, Image, Card, Icon, Divider } from "semantic-ui-react";
 import PostComments from "./PostComments";
 import CommentInputField from "./CommentInputField";
-import calculateTime from "../../utilsClient/calculateTime";
+import calculateTime from "../../utils/calculateTime";
 import Link from "next/link";
-import { likePost } from "../../utilsClient/postActions";
+import { likePost } from "../../utils/postActions";
 import LikesList from "./LikesList";
 
 function ImageModal({
-  post = {},
+  post,
   user,
   setLikes,
   likes,
   isLiked,
   comments,
-  setComments,
+  setComments
 }) {
-  console.log('~~post', post);
   return (
     <>
       <Grid columns={2} stackable relaxed>
@@ -45,9 +44,8 @@ function ImageModal({
                 style={{
                   fontSize: "17px",
                   letterSpacing: "0.1px",
-                  wordSpacing: "0.35px",
-                }}
-              >
+                  wordSpacing: "0.35px"
+                }}>
                 {post.text}
               </Card.Description>
             </Card.Content>
@@ -67,9 +65,7 @@ function ImageModal({
                 trigger={
                   likes.length > 0 && (
                     <span className="spanLikesList">
-                      {`${likes.length} ${
-                        likes.length === 1 ? "like" : "likes"
-                      }`}
+                      {`${likes.length} ${likes.length === 1 ? "like" : "likes"}`}
                     </span>
                   )
                 }
@@ -81,11 +77,10 @@ function ImageModal({
                 style={{
                   overflow: "auto",
                   height: comments.length > 2 ? "200px" : "60px",
-                  marginBottom: "8px",
-                }}
-              >
+                  marginBottom: "8px"
+                }}>
                 {comments.length > 0 &&
-                  comments.map((comment) => (
+                  comments.map(comment => (
                     <PostComments
                       key={comment._id}
                       comment={comment}

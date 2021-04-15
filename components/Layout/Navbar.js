@@ -1,7 +1,7 @@
-import React from 'react';
-import { Menu, Container, Icon } from 'semantic-ui-react';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import React from "react";
+import { Menu, Container, Icon } from "semantic-ui-react";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 function Navbar() {
   const router = useRouter();
@@ -10,23 +10,18 @@ function Navbar() {
 
   return (
     <Menu fluid borderless>
-      <Container>
-      <Link href="/">
-          <Menu.Item active={isActive('/')}>
-            <Icon size="large" name="home" />
-            Home
-          </Menu.Item>
-        </Link>
-        <Link href="/signin">
-          <Menu.Item active={isActive('/signin')}>
+      <Container text>
+        <Link href="/login">
+          <Menu.Item header active={isActive("/login")}>
             <Icon size="large" name="sign in" />
-            Sign in
+            Login
           </Menu.Item>
         </Link>
-        <Link href="/signup" >
-          <Menu.Item active={isActive('/signup')}>
+
+        <Link href="/signup">
+          <Menu.Item header active={isActive("/signup")}>
             <Icon size="large" name="signup" />
-            Sign up
+            Signup
           </Menu.Item>
         </Link>
       </Container>

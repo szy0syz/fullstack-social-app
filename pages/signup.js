@@ -1,41 +1,38 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Form, Button, Message, Segment, Divider } from 'semantic-ui-react';
-import CommonInputs from '../components/Common/CommonInputs';
-import ImageDropDiv from '../components/Common/ImageDropDiv';
-import {
-  HeaderMessage,
-  FooterMessage,
-} from '../components/Common/WelcomeMessage';
-import axios from 'axios';
-import baseUrl from '../utilsClient/baseUrl';
-import { registerUser } from '../utilsClient/authUser';
-import uploadPic from '../utilsClient/uploadPicToCloudinary';
+import React, { useState, useEffect, useRef } from "react";
+import { Form, Button, Message, Segment, Divider } from "semantic-ui-react";
+import CommonInputs from "../components/Common/CommonInputs";
+import ImageDropDiv from "../components/Common/ImageDropDiv";
+import { HeaderMessage, FooterMessage } from "../components/Common/WelcomeMessage";
+import axios from "axios";
+import baseUrl from "../utils/baseUrl";
+import { registerUser } from "../utils/authUser";
+import uploadPic from "../utils/uploadPicToCloudinary";
 const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 let cancel;
 
 function Signup() {
   const [user, setUser] = useState({
-    name: '',
-    email: '',
-    password: '',
-    bio: '',
-    facebook: '',
-    youtube: '',
-    twitter: '',
-    instagram: '',
+    name: "",
+    email: "",
+    password: "",
+    bio: "",
+    facebook: "",
+    youtube: "",
+    twitter: "",
+    instagram: ""
   });
 
   const { name, email, password, bio } = user;
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     const { name, value, files } = e.target;
 
-    if (name === 'media') {
+    if (name === "media") {
       setMedia(files[0]);
       setMediaPreview(URL.createObjectURL(files[0]));
     }
 
-    setUser((prev) => ({ ...prev, [name]: value }));
+    setUser(prev => ({ ...prev, [name]: value }));
   };
 
   const [showSocialLinks, setShowSocialLinks] = useState(false);
@@ -44,7 +41,7 @@ function Signup() {
   const [formLoading, setFormLoading] = useState(false);
   const [submitDisabled, setSubmitDisabled] = useState(true);
 
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState("");
   const [usernameLoading, setUsernameLoading] = useState(false);
   const [usernameAvailable, setUsernameAvailable] = useState(false);
 
@@ -54,7 +51,7 @@ function Signup() {
   const inputRef = useRef();
 
   useEffect(() => {
-    const isUser = Object.values({ name, email, password, bio }).every((item) =>
+    const isUser = Object.values({ name, email, password, bio }).every(item =>
       Boolean(item)
     );
     isUser ? setSubmitDisabled(false) : setSubmitDisabled(true);
@@ -68,29 +65,29 @@ function Signup() {
       const CancelToken = axios.CancelToken;
 
       const res = await axios.get(`${baseUrl}/api/signup/${username}`, {
-        cancelToken: new CancelToken((canceler) => {
+        cancelToken: new CancelToken(canceler => {
           cancel = canceler;
-        }),
+        })
       });
 
       if (errorMsg !== null) setErrorMsg(null);
 
-      if (res.data === 'Available') {
+      if (res.data === "Available") {
         setUsernameAvailable(true);
-        setUser((prev) => ({ ...prev, username }));
+        setUser(prev => ({ ...prev, username }));
       }
     } catch (error) {
-      setErrorMsg('Username Not Available');
+      setErrorMsg("Username Not Available");
       setUsernameAvailable(false);
     }
     setUsernameLoading(false);
   };
 
   useEffect(() => {
-    username === '' ? setUsernameAvailable(false) : checkUsername();
+    username === "" ? setUsernameAvailable(false) : checkUsername();
   }, [username]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setFormLoading(true);
 
@@ -101,7 +98,7 @@ function Signup() {
 
     if (media !== null && !profilePicUrl) {
       setFormLoading(false);
-      return setErrorMsg('Error Uploading Image');
+      return setErrorMsg("Error Uploading Image");
     }
 
     await registerUser(user, profilePicUrl, setErrorMsg, setFormLoading);
@@ -110,11 +107,7 @@ function Signup() {
   return (
     <>
       <HeaderMessage />
-      <Form
-        loading={formLoading}
-        error={errorMsg !== null}
-        onSubmit={handleSubmit}
-      >
+      <Form loading={formLoading} error={errorMsg !== null} onSubmit={handleSubmit}>
         <Message
           error
           header="Oops!"
@@ -165,13 +158,13 @@ function Signup() {
             onChange={handleChange}
             fluid
             icon={{
-              name: 'eye',
+              name: "eye",
               circular: true,
               link: true,
-              onClick: () => setShowPassword(!showPassword),
+              onClick: () => setShowPassword(!showPassword)
             }}
             iconPosition="left"
-            type={showPassword ? 'text' : 'password'}
+            type={showPassword ? "text" : "password"}
             required
           />
 
@@ -182,7 +175,7 @@ function Signup() {
             label="Username"
             placeholder="Username"
             value={username}
-            onChange={(e) => {
+            onChange={e => {
               setUsername(e.target.value);
               if (regexUserName.test(e.target.value)) {
                 setUsernameAvailable(true);
@@ -191,7 +184,7 @@ function Signup() {
               }
             }}
             fluid
-            icon={usernameAvailable ? 'check' : 'close'}
+            icon={usernameAvailable ? "check" : "close"}
             iconPosition="left"
           />
 

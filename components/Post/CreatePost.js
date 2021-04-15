@@ -1,10 +1,10 @@
-import React, { useState, useRef } from 'react';
-import { Form, Button, Image, Divider, Message, Icon } from 'semantic-ui-react';
-import uploadPic from '../../utilsClient/uploadPicToCloudinary';
-import { submitNewPost } from '../../utilsClient/postActions';
+import React, { useState, useRef } from "react";
+import { Form, Button, Image, Divider, Message, Icon } from "semantic-ui-react";
+import uploadPic from "../../utils/uploadPicToCloudinary";
+import { submitNewPost } from "../../utils/postActions";
 
 function CreatePost({ user, setPosts }) {
-  const [newPost, setNewPost] = useState({ text: '', location: '' });
+  const [newPost, setNewPost] = useState({ text: "", location: "" });
   const [loading, setLoading] = useState(false);
   const inputRef = useRef();
 
@@ -14,28 +14,28 @@ function CreatePost({ user, setPosts }) {
   const [media, setMedia] = useState(null);
   const [mediaPreview, setMediaPreview] = useState(null);
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     const { name, value, files } = e.target;
 
-    if (name === 'media') {
+    if (name === "media") {
       setMedia(files[0]);
       setMediaPreview(URL.createObjectURL(files[0]));
     }
 
-    setNewPost((prev) => ({ ...prev, [name]: value }));
+    setNewPost(prev => ({ ...prev, [name]: value }));
   };
 
   const addStyles = () => ({
-    textAlign: 'center',
-    height: '150px',
-    width: '150px',
-    border: 'dotted',
-    paddingTop: media === null && '60px',
-    cursor: 'pointer',
-    borderColor: highlighted ? 'green' : 'black',
+    textAlign: "center",
+    height: "150px",
+    width: "150px",
+    border: "dotted",
+    paddingTop: media === null && "60px",
+    cursor: "pointer",
+    borderColor: highlighted ? "green" : "black"
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setLoading(true);
     let picUrl;
@@ -44,7 +44,7 @@ function CreatePost({ user, setPosts }) {
       picUrl = await uploadPic(media);
       if (!picUrl) {
         setLoading(false);
-        return setError('Error Uploading Image');
+        return setError("Error Uploading Image");
       }
     }
 
@@ -98,7 +98,7 @@ function CreatePost({ user, setPosts }) {
             ref={inputRef}
             onChange={handleChange}
             name="media"
-            style={{ display: 'none' }}
+            style={{ display: "none" }}
             type="file"
             accept="image/*"
           />
@@ -107,15 +107,15 @@ function CreatePost({ user, setPosts }) {
         <div
           onClick={() => inputRef.current.click()}
           style={addStyles()}
-          onDrag={(e) => {
+          onDrag={e => {
             e.preventDefault();
             setHighlighted(true);
           }}
-          onDragLeave={(e) => {
+          onDragLeave={e => {
             e.preventDefault();
             setHighlighted(false);
           }}
-          onDrop={(e) => {
+          onDrop={e => {
             e.preventDefault();
             setHighlighted(true);
 
@@ -123,14 +123,13 @@ function CreatePost({ user, setPosts }) {
 
             setMedia(droppedFile[0]);
             setMediaPreview(URL.createObjectURL(droppedFile[0]));
-          }}
-        >
+          }}>
           {media === null ? (
             <Icon name="plus" size="big" />
           ) : (
             <>
               <Image
-                style={{ height: '150px', width: '150px' }}
+                style={{ height: "150px", width: "150px" }}
                 src={mediaPreview}
                 alt="PostImage"
                 centered
@@ -143,9 +142,9 @@ function CreatePost({ user, setPosts }) {
 
         <Button
           circular
-          disabled={newPost.text === '' || loading}
+          disabled={newPost.text === "" || loading}
           content={<strong>Post</strong>}
-          style={{ backgroundColor: '#1DA1F2', color: 'white' }}
+          style={{ backgroundColor: "#1DA1F2", color: "white" }}
           icon="send"
           loading={loading}
         />

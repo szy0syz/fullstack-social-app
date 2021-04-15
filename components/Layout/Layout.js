@@ -8,7 +8,7 @@ import {
   Sticky,
   Ref,
   Divider,
-  Segment,
+  Segment
 } from "semantic-ui-react";
 import nprogress from "nprogress";
 import Router from "next/router";

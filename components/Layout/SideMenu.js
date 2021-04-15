@@ -2,22 +2,20 @@ import React from "react";
 import { List, Icon } from "semantic-ui-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { logoutUser } from "../../utilsClient/authUser";
+import { logoutUser } from "../../utils/authUser";
 
-function SideMenu({
-  user: { unreadNotification, email, unreadMessage, username },
-}) {
+function SideMenu({ user: { unreadNotification, email, unreadMessage, username } }) {
   const router = useRouter();
-  const isActive = (route) => router.pathname === route;
+
+  const isActive = route => router.pathname === route;
 
   return (
     <>
       <List
         style={{ paddingTop: "1rem" }}
-        verticalAlign="middle"
-        selection
         size="big"
-      >
+        verticalAlign="middle"
+        selection>
         <Link href="/">
           <List.Item active={isActive("/")}>
             <Icon name="home" size="large" color={isActive("/") && "teal"} />
@@ -65,7 +63,7 @@ function SideMenu({
           <List.Item active={router.query.username === username}>
             <Icon
               name="user"
-              size="large" //* 注1
+              size="large"
               color={router.query.username === username && "teal"}
             />
             <List.Content>
@@ -85,9 +83,5 @@ function SideMenu({
     </>
   );
 }
-
-/**
- * 注1：<Route exact path="/:id" component={Profile}>
- */
 
 export default SideMenu;

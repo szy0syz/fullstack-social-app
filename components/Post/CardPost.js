@@ -1,32 +1,34 @@
-import Link from "next/link";
 import React, { useState } from "react";
 import {
-  Button,
   Card,
-  Divider,
-  Header,
   Icon,
   Image,
-  Popup,
-  Modal,
+  Divider,
   Segment,
+  Button,
+  Popup,
+  Header,
+  Modal
 } from "semantic-ui-react";
-import calculateTime from "../../utilsClient/calculateTime";
-import CommentInputField from "./CommentInputField";
-import LikesList from "./LikesList";
 import PostComments from "./PostComments";
+import CommentInputField from "./CommentInputField";
+import calculateTime from "../../utils/calculateTime";
+import Link from "next/link";
+import { deletePost, likePost } from "../../utils/postActions";
+import LikesList from "./LikesList";
 import ImageModal from "./ImageModal";
 import NoImageModal from "./NoImageModal";
-import { deletePost, likePost } from "../../utilsClient/postActions";
 
 function CardPost({ post, user, setPosts, setShowToastr }) {
   const [likes, setLikes] = useState(post.likes);
-  const [comments, setComments] = useState(post.comments);
+
   const isLiked =
-    likes.length > 0 &&
-    likes.filter((like) => like.user === user._id).length > 0;
+    likes.length > 0 && likes.filter(like => like.user === user._id).length > 0;
+
+  const [comments, setComments] = useState(post.comments);
 
   const [error, setError] = useState(null);
+
   const [showModal, setShowModal] = useState(false);
 
   const addPropsToModal = () => ({
@@ -36,11 +38,9 @@ function CardPost({ post, user, setPosts, setShowToastr }) {
     likes,
     isLiked,
     comments,
-    setComments,
+    setComments
   });
-  console.log('~~post', post);
-  console.log('~~user', user);
-  console.log('~~likes', likes);
+
   return (
     <>
       {showModal && (
@@ -48,18 +48,18 @@ function CardPost({ post, user, setPosts, setShowToastr }) {
           open={showModal}
           closeIcon
           closeOnDimmerClick
-          onClose={() => setShowModal(false)}
-        >
+          onClose={() => setShowModal(false)}>
           <Modal.Content>
             {post.picUrl ? (
-              <ImageModal {...addPropsToModal} />
+              <ImageModal {...addPropsToModal()} />
             ) : (
-              <NoImageModal {...addPropsToModal} />
+              <NoImageModal {...addPropsToModal()} />
             )}
           </Modal.Content>
         </Modal>
       )}
-      <Segment>
+
+      <Segment basic>
         <Card color="teal" fluid>
           {post.picUrl && (
             <Image
@@ -74,12 +74,7 @@ function CardPost({ post, user, setPosts, setShowToastr }) {
           )}
 
           <Card.Content>
-            <Image
-              floated="left"
-              src={post.user.profilePicUrl}
-              avatar
-              circular
-            />
+            <Image floated="left" src={post.user.profilePicUrl} avatar circular />
 
             {(user.role === "root" || post.user._id === user._id) && (
               <>
@@ -93,8 +88,7 @@ function CardPost({ post, user, setPosts, setShowToastr }) {
                       size="mini"
                       floated="right"
                     />
-                  }
-                >
+                  }>
                   <Header as="h4" content="Are you sure?" />
                   <p>This action is irreversible!</p>
 
@@ -102,9 +96,7 @@ function CardPost({ post, user, setPosts, setShowToastr }) {
                     color="red"
                     icon="trash"
                     content="Delete"
-                    onClick={() => {
-                      deletePost(post._id, setPosts, setShowToastr);
-                    }}
+                    onClick={() => deletePost(post._id, setPosts, setShowToastr)}
                   />
                 </Popup>
               </>
@@ -124,9 +116,8 @@ function CardPost({ post, user, setPosts, setShowToastr }) {
               style={{
                 fontSize: "17px",
                 letterSpacing: "0.1px",
-                wordSpacing: "0.35px",
-              }}
-            >
+                wordSpacing: "0.35px"
+              }}>
               {post.text}
             </Card.Description>
           </Card.Content>
@@ -136,9 +127,9 @@ function CardPost({ post, user, setPosts, setShowToastr }) {
               name={isLiked ? "heart" : "heart outline"}
               color="red"
               style={{ cursor: "pointer" }}
-              onClick={() => {
-                likePost(post._id, user._id, setLikes, isLiked ? false : true);
-              }}
+              onClick={() =>
+                likePost(post._id, user._id, setLikes, isLiked ? false : true)
+              }
             />
 
             <LikesList
@@ -192,6 +183,7 @@ function CardPost({ post, user, setPosts, setShowToastr }) {
           </Card.Content>
         </Card>
       </Segment>
+      <Divider hidden />
     </>
   );
 }

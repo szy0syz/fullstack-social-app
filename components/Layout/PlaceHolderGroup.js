@@ -12,8 +12,8 @@ import { range } from "lodash";
 
 export const PlaceHolderPosts = () =>
   range(1, 3).map(item => (
-    <>
-      <Placeholder key={item} fluid>
+    <div key={item}>
+      <Placeholder fluid>
         <Placeholder.Header image>
           <Placeholder.Line />
           <Placeholder.Line />
@@ -26,7 +26,7 @@ export const PlaceHolderPosts = () =>
         </Placeholder.Paragraph>
       </Placeholder>
       <Divider hidden />
-    </>
+    </div>
   ));
 
 export const PlaceHolderSuggestions = () => (
@@ -80,9 +80,9 @@ export const EndMessage = () => (
 );
 
 export const LikesPlaceHolder = () =>
-  range(1, 5).map(item => (
+  range(1, 6).map(item => (
     <Placeholder key={item} style={{ minWidth: "200px" }}>
-      <Placeholder.Header image circular>
+      <Placeholder.Header image>
         <Placeholder.Line length="full" />
       </Placeholder.Header>
     </Placeholder>

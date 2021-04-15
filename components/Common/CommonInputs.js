@@ -1,11 +1,11 @@
-import React from 'react';
-import { Form, Button, Message, TextArea, Divider } from 'semantic-ui-react';
+import React from "react";
+import { Form, Button, Message, TextArea, Divider } from "semantic-ui-react";
 
 function CommonInputs({
   user: { bio, facebook, instagram, youtube, twitter },
   handleChange,
   showSocialLinks,
-  setShowSocialLinks,
+  setShowSocialLinks
 }) {
   return (
     <>
@@ -17,6 +17,7 @@ function CommonInputs({
         onChange={handleChange}
         placeholder="bio"
       />
+
       <Button
         content="Add Social Links"
         color="red"
