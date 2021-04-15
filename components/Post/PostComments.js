@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Comment, Icon } from 'semantic-ui-react';
 import calcTime from '../../utilsClient/calculateTime';
+import { deleteComment } from "../../utilsClient/postActions";
 
 function PostComments({ comment, user, setComments, postId }) {
-  const [disabled, setDisable] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
   return (
     <>

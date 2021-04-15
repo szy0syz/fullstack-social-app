@@ -12,7 +12,7 @@ class MyApp extends App {
     const { token } = parseCookies(ctx);
 
     // 可以反着来
-    const protectedRoutes = ['/', '/t1'].includes(ctx.pathname);
+    const protectedRoutes = ['/'].includes(ctx.pathname);
 
     if (!token) {
       protectedRoutes && redirectUser(ctx, '/signin');

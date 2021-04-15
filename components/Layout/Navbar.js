@@ -29,12 +29,6 @@ function Navbar() {
             Sign up
           </Menu.Item>
         </Link>
-        <Link href="/t1">
-          <Menu.Item active={isActive('/t1')}>
-            <Icon size="large" name="settings" />
-            T1
-          </Menu.Item>
-        </Link>
       </Container>
     </Menu>
   );

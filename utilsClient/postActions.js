@@ -1,12 +1,31 @@
-import axios from 'axios';
-import cookie from 'js-cookie';
+import axios from "axios";
+import cookie from "js-cookie";
 import baseUrl from "./baseUrl";
-import catchErrors from './catchErrors';
+import catchErrors from "./catchErrors";
 
 const Axios = axios.create({
   baseURL: `${baseUrl}/api/posts`,
-  headers: { Authorization: cookie.get("token") }
+  headers: { Authorization: cookie.get("token") },
 });
+
+export const submitNewPost = async (
+  text,
+  location,
+  picUrl,
+  setPosts,
+  setNewPost,
+  setError
+) => {
+  try {
+    const res = await Axios.post("/", { text, location, picUrl });
+
+    setPosts((prev) => [res.data, ...prev]);
+    setNewPost({ text: "", location: "" });
+  } catch (error) {
+    const errorMsg = catchErrors(error);
+    setError(errorMsg);
+  }
+};
 
 export const postComment = async (postId, user, text, setComments, setText) => {
   try {
@@ -20,27 +39,20 @@ export const postComment = async (postId, user, text, setComments, setText) => {
     };
 
     setComments((prev) => [newComment, ...prev]);
-    setText('');
+    setText("");
   } catch (error) {
     alert(catchErrors(error));
   }
 };
 
-export const submitNewPost = async (
-  text,
-  location,
-  picUrl,
-  setPosts,
-  setNewPost,
-  setError
-) => {
-  try {
-    const res = await Axios.post('/', { text, location, picUrl });
+export const deletePost = async () => {
+  alert("deletePost");
+};
 
-    setPosts((prev) => [res.data, ...prev]);
-    setNewPost({ text: '', location: '' });
-  } catch (error) {
-    const errorMsg = catchErrors(error);
-    setError(errorMsg);
-  }
+export const likePost = async () => {
+  alert("likePost");
+};
+
+export const deleteComment = async () => {
+  alert("deleteComment");
 };
