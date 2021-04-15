@@ -3,8 +3,13 @@ import { Divider, Comment, Icon, List } from 'semantic-ui-react';
 import { useRouter } from 'next/router';
 import calcTime from '../../utils/calculateTime';
 
-function Chat({ chat, setChats }) {
+function Chat({ chat, setChats, connectedUsers }) {
   const router = useRouter();
+
+  const isOnLine =
+    connectedUsers.length > 0 &&
+    connectedUsers.filter((user) => user.userId === chat.messageWith).length >
+      0;
 
   return (
     <>

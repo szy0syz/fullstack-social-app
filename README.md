@@ -27,4 +27,4 @@
 
 - [https://nextjs.org/docs/advanced-features/custom-app]
 
-6-4 2_18
+6-10 0_5

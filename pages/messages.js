@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { parseCookies } from 'nookies';
-import React, { useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import baseUrl from '../utils/baseUrl';
 import {
   Segment,
@@ -10,22 +10,49 @@ import {
   Grid,
   Icon,
 } from 'semantic-ui-react';
+import io from 'socket.io-client';
 import Chat from '../components/Chats/Chat';
 import ChatListSearch from '../components/Chats/ChatListSearch';
 import { useRouter } from 'next/router';
 import { NoMessages } from '../components/Layout/NoData';
 
-function Messages({ chatsData }) {
-  const [chats, setChats] = useState(chatsData);
+function Messages({ user, chatsData }) {
+  const socket = useRef();
   const router = useRouter();
+  const [chats, setChats] = useState(chatsData);
+  const [connectedUsers, setConnectedUsers] = useState([]);
 
   useEffect(() => {
+    if (!socket.current) {
+      socket.current = io(baseUrl);
+    }
+
+    if (socket.current) {
+      socket.current.emit('join', { userId: user._id });
+
+      socket.current.on('connectedUsers', ({ users }) => {
+        users.length > 0 && setConnectedUsers(users);
+      });
+    }
+
     if (chats.length > 0 && !router.query.message) {
       router.push(`/messages?message=${chats[0].messagesWith}`, undefined, {
         shallow: true,
       });
     }
+
+    return () => {
+      console.log('~~~关闭 message~~')
+      if (socket.current) {
+        socket.current.emit('disconnect');
+        socket.current.off();
+      }
+    };
   }, []);
+
+  useEffect(() => {
+    console.log('~~connectedUsers', connectedUsers);
+  }, [connectedUsers])
 
   return (
     <>

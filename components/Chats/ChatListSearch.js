@@ -15,8 +15,10 @@ function ChatListSearch({ chats, setChats }) {
   const handleChange = async (e) => {
     const { value } = e.target;
     setText(value);
-    setLoading(true);
 
+    if (value.length === 0) return;
+
+    setLoading(true);
     try {
       cancel && cancel();
       const CancelToken = axios.CancelToken;
@@ -33,6 +35,7 @@ function ChatListSearch({ chats, setChats }) {
 
       setResults(res.data);
     } catch (error) {
+      console.error(error);
       alert('Error Searching');
     }
 
