@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const UserModel = require("../models/UserModel");
+const ChatModel = require("../models/ChatModel");
 const ProfileModel = require("../models/ProfileModel");
 const FollowerModel = require("../models/FollowerModel");
 const NotificationModel = require("../models/NotificationModel");
@@ -82,6 +83,7 @@ router.post("/", async (req, res) => {
     await new ProfileModel(profileFields).save();
     await new FollowerModel({ user: user._id, followers: [], following: [] }).save();
     await new NotificationModel({ user: user._id, notifications: [] }).save();
+    await new ChatModel({ user: user._id, chat: [] }).save();
 
     const payload = { userId: user._id };
     jwt.sign(payload, process.env.jwtSecret, { expiresIn: "2d" }, (err, token) => {
