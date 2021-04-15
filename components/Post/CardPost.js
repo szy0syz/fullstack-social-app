@@ -8,13 +8,16 @@ import {
   Icon,
   Image,
   Popup,
+  Modal,
   Segment,
 } from "semantic-ui-react";
 import calculateTime from "../../utilsClient/calculateTime";
 import CommentInputField from "./CommentInputField";
 import LikesList from "./LikesList";
 import PostComments from "./PostComments";
-import { deletePost, likePost } from '../../utilsClient/postActions'
+import ImageModal from "./ImageModal";
+import NoImageModal from "./NoImageModal";
+import { deletePost, likePost } from "../../utilsClient/postActions";
 
 function CardPost({ post, user, setPosts, setShowToastr }) {
   const [likes, setLikes] = useState(post.likes);
@@ -24,9 +27,38 @@ function CardPost({ post, user, setPosts, setShowToastr }) {
     likes.filter((like) => like.user === user._id).length > 0;
 
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
+  const addPropsToModal = () => ({
+    post,
+    user,
+    setLikes,
+    likes,
+    isLiked,
+    comments,
+    setComments,
+  });
+  console.log('~~post', post);
+  console.log('~~user', user);
+  console.log('~~likes', likes);
   return (
     <>
+      {showModal && (
+        <Modal
+          open={showModal}
+          closeIcon
+          closeOnDimmerClick
+          onClose={() => setShowModal(false)}
+        >
+          <Modal.Content>
+            {post.picUrl ? (
+              <ImageModal {...addPropsToModal} />
+            ) : (
+              <NoImageModal {...addPropsToModal} />
+            )}
+          </Modal.Content>
+        </Modal>
+      )}
       <Segment>
         <Card color="teal" fluid>
           {post.picUrl && (
@@ -71,7 +103,7 @@ function CardPost({ post, user, setPosts, setShowToastr }) {
                     icon="trash"
                     content="Delete"
                     onClick={() => {
-                      deletePost(post._id, setPosts, setShowToastr)
+                      deletePost(post._id, setPosts, setShowToastr);
                     }}
                   />
                 </Popup>
@@ -105,7 +137,7 @@ function CardPost({ post, user, setPosts, setShowToastr }) {
               color="red"
               style={{ cursor: "pointer" }}
               onClick={() => {
-                likePost(post._id, user._id, setLikes, isLiked ? false : true)
+                likePost(post._id, user._id, setLikes, isLiked ? false : true);
               }}
             />
 

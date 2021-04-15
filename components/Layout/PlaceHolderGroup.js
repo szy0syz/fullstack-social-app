@@ -80,9 +80,9 @@ export const EndMessage = () => (
 );
 
 export const LikesPlaceHolder = () =>
-  range(1, 6).map(item => (
+  range(1, 5).map(item => (
     <Placeholder key={item} style={{ minWidth: "200px" }}>
-      <Placeholder.Header image>
+      <Placeholder.Header image circular>
         <Placeholder.Line length="full" />
       </Placeholder.Header>
     </Placeholder>
