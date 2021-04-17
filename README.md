@@ -1,6 +1,12 @@
 # fullstack-social-app
 
-## directories
+## Notes
+
+- 组件分类：按DDD中 “域” 概念划分组件
+- 其实整个项目的划分都是按 "领" 划分的
+- 目前共用的组件都放在了 “Layout” 下
+
+## Menu
 
 ```bash
 .
