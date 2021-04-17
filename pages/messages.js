@@ -35,6 +35,7 @@ function Messages({ user, chatsData }) {
       });
     }
 
+    // 以 `/messages` 的方式进入时，自动加上当前用户信息
     if (chats.length > 0 && !router.query.message) {
       router.push(`/messages?message=${chats[0].messagesWith}`, undefined, {
         shallow: true,
@@ -42,7 +43,6 @@ function Messages({ user, chatsData }) {
     }
 
     return () => {
-      console.log('~~~关闭 message~~')
       if (socket.current) {
         socket.current.emit('disconnect');
         socket.current.off();
