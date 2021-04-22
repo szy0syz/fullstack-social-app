@@ -147,6 +147,7 @@ function Messages({ user, chatsData }) {
                                 user={user}
                                 setMessages={setMessages}
                                 messagesWith={openChatId.current}
+                                bannerProfilePic={bannerData.profilePicUrl}
                               />
                             ))}
                           </>
