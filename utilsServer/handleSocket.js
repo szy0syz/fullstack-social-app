@@ -1,4 +1,4 @@
-const { addUser, removeUser } = require("./utilsServer/roomActions");
+const { addUser, removeUser } = require("../utilsServer/roomActions");
 const { loadMessages } = require("./messageAction");
 
 function handle(io) {
