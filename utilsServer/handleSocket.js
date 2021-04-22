@@ -9,25 +9,21 @@ function handle(io) {
   io.on('connection', (socket) => {
     socket.on('join', async ({ userId }) => {
       const users = await addUser(userId, socket.id);
-
-      console.log('User connected', users);
+      console.log(users);
 
       setInterval(() => {
         socket.emit('connectedUsers', {
           users: users.filter((user) => user.userId !== userId),
         });
-      }, 5 * 1000);
+      }, 10000);
     });
 
     socket.on('loadMessages', async ({ userId, messagesWith }) => {
-      console.log('@userId, messagesWith', userId, messagesWith);
       const { chat, error } = await loadMessages(userId, messagesWith);
 
-      if (error) {
-        socket.emit('noChatFound');
-      } else {
-        socket.emit('messagesLoaded', { chat });
-      }
+      !error
+        ? socket.emit('messagesLoaded', { chat })
+        : socket.emit('noChatFound');
     });
 
     socket.on('sendNewMsg', async ({ userId, msgSendToUserId, msg }) => {
@@ -35,21 +31,43 @@ function handle(io) {
       const receiverSocket = findConnectedUser(msgSendToUserId);
 
       if (receiverSocket) {
+        // WHEN YOU WANT TO SEND MESSAGE TO A PARTICULAR SOCKET
         io.to(receiverSocket.socketId).emit('newMsgReceived', { newMsg });
-      } else {
-        // 被叫方不在线
-        await setMsgToUnread(msgSendToUserId)
+      }
+      //
+      else {
+        await setMsgToUnread(msgSendToUserId);
       }
 
-      if (!error) {
-        socket.emit('msgSent', { newMsg });
-      }
+      !error && socket.emit('msgSent', { newMsg });
     });
 
-    socket.on('disconnect', () => {
-      removeUser(socket.id);
-      console.log('User disconnected', socket.id);
+    socket.on('deleteMsg', async ({ userId, messagesWith, messageId }) => {
+      const { success } = await deleteMsg(userId, messagesWith, messageId);
+
+      if (success) socket.emit('msgDeleted');
     });
+
+    socket.on(
+      'sendMsgFromNotification',
+      async ({ userId, msgSendToUserId, msg }) => {
+        const { newMsg, error } = await sendMsg(userId, msgSendToUserId, msg);
+        const receiverSocket = findConnectedUser(msgSendToUserId);
+
+        if (receiverSocket) {
+          // WHEN YOU WANT TO SEND MESSAGE TO A PARTICULAR SOCKET
+          io.to(receiverSocket.socketId).emit('newMsgReceived', { newMsg });
+        }
+        //
+        else {
+          await setMsgToUnread(msgSendToUserId);
+        }
+
+        !error && socket.emit('msgSentFromNotification');
+      }
+    );
+
+    socket.on('disconnect', () => removeUser(socket.id));
   });
 }
 

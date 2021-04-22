@@ -1,15 +1,11 @@
 const ChatModel = require('../models/ChatModel');
 const UserModel = require('../models/UserModel');
 
-const loadMessages = async ({ userId, messagesWith }) => {
+const loadMessages = async (userId, messagesWith) => {
   try {
     const user = await ChatModel.findOne({ user: userId }).populate(
       'chats.messagesWith'
     );
-
-    if (!user) {
-      return { error: 'No chat found' };
-    }
 
     const chat = user.chats.find(
       (chat) => chat.messagesWith._id.toString() === messagesWith
@@ -27,7 +23,6 @@ const loadMessages = async ({ userId, messagesWith }) => {
 };
 
 const sendMsg = async (userId, msgSendToUserId, msg) => {
-  console.log('@@@@!!!!!userId, msgSendToUserId, msg', userId, msgSendToUserId, msg)
   try {
     // LOGGED IN USER (SENDER)
     const user = await ChatModel.findOne({ user: userId });
@@ -52,7 +47,6 @@ const sendMsg = async (userId, msgSendToUserId, msg) => {
     }
     //
     else {
-      console.log('@@@newMsg', newMsg)
       const newChat = { messagesWith: msgSendToUserId, messages: [newMsg] };
       user.chats.unshift(newChat);
       await user.save();
