@@ -38,9 +38,7 @@ function Message({ message, user, deleteMsg, bannerProfilePic, divRef }) {
         )}
       </div>
 
-      <span className={ifYouSender ? "own" : "other"}>
-        {calculateTime(message.date)}
-      </span>
+      <span className={ifYouSender ? "own" : "other"}>{calculateTime(message.date)}</span>
     </div>
   );
 }

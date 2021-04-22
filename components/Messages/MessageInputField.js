@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { Segment, Form } from "semantic-ui-react";
+import { Form, Segment } from "semantic-ui-react";
 
 function MessageInputField({ sendMsg }) {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
 
   return (
-    <div style={{ position: "sticky", bottom: 0 }}>
-      <Segment>
+    <div style={{ position: "sticky", bottom: "0" }}>
+      <Segment secondary color="teal" attached="bottom">
         <Form
           reply
-          onSubmit={(e) => {
+          onSubmit={e => {
             e.preventDefault();
             sendMsg(text);
             setText("");
@@ -20,12 +20,12 @@ function MessageInputField({ sendMsg }) {
             size="large"
             placeholder="Send New Message"
             value={text}
-            onChange={(e) => setText(e.target.value)}
+            onChange={e => setText(e.target.value)}
             action={{
               color: "blue",
-              icon: "telegram place",
+              icon: "telegram plane",
               disabled: text === "",
-              loading: loading,
+              loading: loading
             }}
           />
         </Form>
