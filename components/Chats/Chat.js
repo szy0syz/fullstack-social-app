@@ -8,16 +8,16 @@ function Chat({ chat, setChats, connectedUsers }) {
 
   const isOnline =
     connectedUsers.length > 0 &&
-    connectedUsers.filter((user) => user.userId === chat.messageWith).length >
+    connectedUsers.filter((user) => user.userId === chat.messagesWith).length >
       0;
 
   return (
     <>
       <List selection>
         <List.Item
-          active={router.query.message === chat.messageWith}
+          active={router.query.message === chat.messagesWith}
           onClick={() => {
-            router.push(`/messages?message=${chat.messageWith}`, undefined, {
+            router.push(`/messages?message=${chat.messagesWith}`, undefined, {
               shallow: true,
             });
           }}

@@ -47,4 +47,4 @@
 
 - [https://nextjs.org/docs/advanced-features/custom-app]
 
-6-15 0_15
+6-17 0_0
