@@ -16,7 +16,7 @@ router.get('/', authMiddleware, async (req, res) => {
 
     let chatsToBeSent = [];
 
-    if (user.chats.length > 0) {
+    if (user && user.chats.length > 0) {
       chatsToBeSent = await user.chats.map((chat) => ({
         messagesWith: chat.messagesWith._id,
         name: chat.messagesWith.name,

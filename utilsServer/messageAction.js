@@ -28,16 +28,16 @@ const sendMsg = async (userId, msgSendToUserId, msg) => {
 
     // RECEIVER
     const msgSendToUser = await ChatModel.findOne({ user: msgSendToUserId });
-
+    console.log("\n\n~~~~~~~userId, msgSendToUserId, msg~", userId, msgSendToUserId, msg);
     const newMsg = {
       sender: userId,
       receiver: msgSendToUserId,
       msg,
-      date: Date.now()
+      date: Date.now(),
     };
 
     const previousChat = user.chats.find(
-      chat => chat.messagesWith.toString() === msgSendToUserId
+      (chat) => chat.messagesWith.toString() === msgSendToUserId
     );
 
     if (previousChat) {
@@ -52,7 +52,7 @@ const sendMsg = async (userId, msgSendToUserId, msg) => {
     }
 
     const previousChatForReceiver = msgSendToUser.chats.find(
-      chat => chat.messagesWith.toString() === userId
+      (chat) => chat.messagesWith.toString() === userId
     );
 
     if (previousChatForReceiver) {

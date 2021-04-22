@@ -1,12 +1,12 @@
 import React from 'react';
 import { Divider, Comment, Icon, List } from 'semantic-ui-react';
 import { useRouter } from 'next/router';
-import calcTime from '../../utils/calculateTime';
+import calculateTime from '../../utils/calculateTime';
 
 function Chat({ chat, setChats, connectedUsers }) {
   const router = useRouter();
 
-  const isOnLine =
+  const isOnline =
     connectedUsers.length > 0 &&
     connectedUsers.filter((user) => user.userId === chat.messageWith).length >
       0;

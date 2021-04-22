@@ -143,7 +143,7 @@ function Messages({ user, chatsData }) {
                         key={i}
                         chat={chat}
                         connectedUsers={connectedUsers}
-                        deleteChat={deleteChat}
+                        deleteChat={() => {}}
                       />
                     ))}
                   </Segment>
