@@ -2,19 +2,14 @@ import axios from "axios";
 import { parseCookies } from "nookies";
 import React, { useRef, useEffect, useState } from "react";
 import baseUrl from "../utils/baseUrl";
-import {
-  Segment,
-  Header,
-  Divider,
-  Comment,
-  Grid,
-  Icon,
-} from "semantic-ui-react";
+import { Segment, Header, Divider, Comment, Grid } from "semantic-ui-react";
 import io from "socket.io-client";
 import Chat from "../components/Chats/Chat";
 import ChatListSearch from "../components/Chats/ChatListSearch";
 import { useRouter } from "next/router";
 import { NoMessages } from "../components/Layout/NoData";
+import Banner from "../components/Messages/Banner";
+import MessageInputField from "../components/Messages/MessageInputField";
 
 function Messages({ user, chatsData }) {
   const socket = useRef();
@@ -29,6 +24,7 @@ function Messages({ user, chatsData }) {
   // this ref is the query inside url
   const openChatId = useRef();
 
+  // Connection Use Effect
   useEffect(() => {
     if (!socket.current) {
       socket.current = io(baseUrl);
@@ -61,6 +57,7 @@ function Messages({ user, chatsData }) {
     console.log("\n~~connectedUsers", connectedUsers);
   }, [connectedUsers]);
 
+  // Load Message Use Effect
   useEffect(() => {
     const loadMessages = () => {
       socket.current.emit("loadMessages", {
@@ -84,6 +81,37 @@ function Messages({ user, chatsData }) {
       loadMessages();
     }
   }, [router.query.message]);
+
+  // Confirming msg is sent and reveving the messages
+  useEffect(() => {
+    if (socket.current) {
+      socket.current.on("msgSent", ({ newMsg }) => {
+        if (newMsg.receiver === openChatId.current) {
+          setMessages((prev) => [...prev, newMsg]);
+        }
+
+        setChats((prev) => {
+          const previousChat = prev.find(
+            (chat) => chat.messagesWith === newMsg.receiver
+          );
+          previousChat.lastMessage = newMsg.msg;
+          previousChat.date = newMsg.date;
+
+          return [...prev];
+        });
+      });
+    }
+  }, []);
+
+  const sendMsg = (msg) => {
+    if (socket.current) {
+      socket.current.emit("sendNewMsg", {
+        userId: user._id,
+        msgSendToUserId: openChatId.current,
+        msg,
+      });
+    }
+  };
 
   return (
     <>
@@ -154,11 +182,7 @@ function Messages({ user, chatsData }) {
                         )}
                       </>
                     </div>
-                    <MessageInputField
-                      user={user}
-                      socket={socket.current}
-                      messagesWith={openChatId.current}
-                    />
+                    <MessageInputField sendMsg={sendMsg} />
                   </>
                 )}
               </Grid.Column>

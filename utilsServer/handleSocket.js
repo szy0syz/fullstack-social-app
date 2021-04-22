@@ -1,5 +1,5 @@
 const { addUser, removeUser } = require("../utilsServer/roomActions");
-const { loadMessages } = require("./messageAction");
+const { loadMessages, sendMsg } = require("./messageAction");
 
 function handle(io) {
   io.on("connection", (socket) => {
@@ -20,6 +20,14 @@ function handle(io) {
 
       if (!error) {
         socket.emit("messagesLoaded", { chat });
+      }
+    });
+
+    socket.on("sendNewMsg", async (userId, msgSendToUserId, msg) => {
+      const { newMsg, error } = await sendMsg(userId, msgSendToUserId, msg);
+
+      if (!error) {
+        socket.emit("msgSent", { newMsg });
       }
     });
 
