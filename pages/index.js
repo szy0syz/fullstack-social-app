@@ -83,9 +83,6 @@ function Index({ user, postsData, errorLoading }) {
     }
   };
 
-  console.log("@@@newMessageModal", newMessageModal);
-  console.log("@@@newMessageReceived", newMessageReceived);
-
   return (
     <>
       {showToastr && <PostDeleteToastr />}
