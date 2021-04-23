@@ -2,72 +2,76 @@ const {
   addUser,
   removeUser,
   findConnectedUser,
-} = require('../utilsServer/roomActions');
-const { loadMessages, sendMsg, setMsgToUnread } = require('./messageAction');
+} = require("../utilsServer/roomActions");
+const { loadMessages, sendMsg, setMsgToUnread } = require("./messageAction");
 
 function handle(io) {
-  io.on('connection', (socket) => {
-    socket.on('join', async ({ userId }) => {
+  io.on("connection", (socket) => {
+    socket.on("join", async ({ userId }) => {
       const users = await addUser(userId, socket.id);
       console.log(users);
 
+      socket.emit("connectedUsers", {
+        users: users.filter((user) => user.userId !== userId),
+      });
+
       setInterval(() => {
-        socket.emit('connectedUsers', {
+        socket.emit("connectedUsers", {
           users: users.filter((user) => user.userId !== userId),
         });
-      }, 10000);
+      }, 5000);
     });
 
-    socket.on('loadMessages', async ({ userId, messagesWith }) => {
+    socket.on("loadMessages", async ({ userId, messagesWith }) => {
       const { chat, error } = await loadMessages(userId, messagesWith);
 
       !error
-        ? socket.emit('messagesLoaded', { chat })
-        : socket.emit('noChatFound');
+        ? socket.emit("messagesLoaded", { chat })
+        : socket.emit("noChatFound");
     });
 
-    socket.on('sendNewMsg', async ({ userId, msgSendToUserId, msg }) => {
+    socket.on("sendNewMsg", async ({ userId, msgSendToUserId, msg }) => {
       const { newMsg, error } = await sendMsg(userId, msgSendToUserId, msg);
       const receiverSocket = findConnectedUser(msgSendToUserId);
 
       if (receiverSocket) {
         // WHEN YOU WANT TO SEND MESSAGE TO A PARTICULAR SOCKET
-        io.to(receiverSocket.socketId).emit('newMsgReceived', { newMsg });
+        io.to(receiverSocket.socketId).emit("newMsgReceived", { newMsg });
       }
       //
       else {
         await setMsgToUnread(msgSendToUserId);
       }
 
-      !error && socket.emit('msgSent', { newMsg });
+      !error && socket.emit("msgSent", { newMsg });
     });
 
-    socket.on('deleteMsg', async ({ userId, messagesWith, messageId }) => {
+    socket.on("deleteMsg", async ({ userId, messagesWith, messageId }) => {
       const { success } = await deleteMsg(userId, messagesWith, messageId);
 
-      if (success) socket.emit('msgDeleted');
+      if (success) socket.emit("msgDeleted");
     });
 
     socket.on(
-      'sendMsgFromNotification',
+      "sendMsgFromNotification",
       async ({ userId, msgSendToUserId, msg }) => {
         const { newMsg, error } = await sendMsg(userId, msgSendToUserId, msg);
         const receiverSocket = findConnectedUser(msgSendToUserId);
 
         if (receiverSocket) {
           // WHEN YOU WANT TO SEND MESSAGE TO A PARTICULAR SOCKET
-          io.to(receiverSocket.socketId).emit('newMsgReceived', { newMsg });
+          io.to(receiverSocket.socketId).emit("newMsgReceived", { newMsg });
         }
         //
         else {
           await setMsgToUnread(msgSendToUserId);
         }
 
-        !error && socket.emit('msgSentFromNotification');
+        !error && socket.emit("msgSentFromNotification");
       }
     );
 
-    socket.on('disconnect', () => removeUser(socket.id));
+    socket.on("disconnect", () => removeUser(socket.id));
   });
 }
 

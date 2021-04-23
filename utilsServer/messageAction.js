@@ -1,10 +1,10 @@
-const ChatModel = require('../models/ChatModel');
-const UserModel = require('../models/UserModel');
+const ChatModel = require("../models/ChatModel");
+const UserModel = require("../models/UserModel");
 
 const loadMessages = async (userId, messagesWith) => {
   try {
     const user = await ChatModel.findOne({ user: userId }).populate(
-      'chats.messagesWith'
+      "chats.messagesWith"
     );
 
     const chat = user.chats.find(
@@ -12,8 +12,13 @@ const loadMessages = async (userId, messagesWith) => {
     );
 
     if (!chat) {
-      return { error: 'No chat found' };
+      return { error: "No chat found" };
     }
+
+    const length = chat.messages.length;
+    const newMessages =
+      length > 0 ? chat.messages.slice(length - 20) : chat.messages;
+    chat.messages = newMessages;
 
     return { chat };
   } catch (error) {

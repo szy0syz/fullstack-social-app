@@ -29,9 +29,10 @@ function Messages({ chatsData, user }) {
   const [bannerData, setBannerData] = useState({ name: "", profilePicUrl: "" });
 
   const divRef = useRef();
-
   // This ref is for persisting the state of query string in url throughout re-renders. This ref is the value of query string inside url
   const openChatId = useRef("");
+
+  console.log('~~message page ~~ rendering~~');
 
   //CONNECTION useEffect
   useEffect(() => {
@@ -262,7 +263,7 @@ function Messages({ chatsData, user }) {
                         messages.map((message, i) => (
                           <Message
                             divRef={divRef}
-                            key={i}
+                            key={message._id}
                             bannerProfilePic={bannerData.profilePicUrl}
                             message={message}
                             user={user}
