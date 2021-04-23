@@ -11,15 +11,11 @@ function handle(io) {
       const users = await addUser(userId, socket.id);
       console.log(users);
 
-      socket.emit("connectedUsers", {
-        users: users.filter((user) => user.userId !== userId),
-      });
-
       setInterval(() => {
         socket.emit("connectedUsers", {
           users: users.filter((user) => user.userId !== userId),
         });
-      }, 5000);
+      }, 10000);
     });
 
     socket.on("loadMessages", async ({ userId, messagesWith }) => {

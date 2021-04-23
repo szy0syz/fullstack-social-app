@@ -1,6 +1,6 @@
-import React, { createRef } from 'react';
-import HeadTags from './HeadTags';
-import Navbar from './Navbar';
+import React, { createRef } from "react";
+import HeadTags from "./HeadTags";
+import Navbar from "./Navbar";
 import {
   Container,
   Visibility,
@@ -8,18 +8,18 @@ import {
   Sticky,
   Ref,
   Divider,
-  Segment,
-} from 'semantic-ui-react';
-import nprogress from 'nprogress';
-import Router, { useRouter } from 'next/router';
-import SideMenu from './SideMenu';
-import Search from './Search';
+  Segment
+} from "semantic-ui-react";
+import nprogress from "nprogress";
+import Router, { useRouter } from "next/router";
+import SideMenu from "./SideMenu";
+import Search from "./Search";
 
 function Layout({ children, user }) {
   const contextRef = createRef();
   const router = useRouter();
 
-  const messagesRouter = router.pathname === '/messages';
+  const messagesRoute = router.pathname === "/messages";
 
   Router.onRouteChangeStart = () => nprogress.start();
   Router.onRouteChangeComplete = () => nprogress.done();
@@ -29,10 +29,10 @@ function Layout({ children, user }) {
     <>
       <HeadTags />
       {user ? (
-        <div style={{ marginLeft: '1rem', marginRight: '1rem' }}>
+        <div style={{ marginLeft: "1rem", marginRight: "1rem" }}>
           <Ref innerRef={contextRef}>
             <Grid>
-              {!messagesRouter ? (
+              {!messagesRoute ? (
                 <>
                   <Grid.Column floated="left" width={2}>
                     <Sticky context={contextRef}>
@@ -64,7 +64,7 @@ function Layout({ children, user }) {
       ) : (
         <>
           <Navbar />
-          <Container text style={{ paddingTop: '1rem' }}>
+          <Container text style={{ paddingTop: "1rem" }}>
             {children}
           </Container>
         </>
