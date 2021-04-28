@@ -1,5 +1,7 @@
 # fullstack-social-app
 
+> V1 from old master
+
 ## directories
 
 ```bash
